@@ -1,0 +1,62 @@
+............................................................
+Injection : 
+    Inject data/json/text from outside to project, that may be
+    damage code, data or control over the project.
+...........................................................
+
+Problem :
+.............................................................
+..............................................................
+code : 
+
+let login =  (req, res) => {
+    console.log('email =>', req.body.email);
+    console.log('password =>', req.body.password);
+
+    const email = req.body.email;
+    const password = req.body.password;
+    UserModel.getOneUser({'email' : { '$eq' : email}, 'password' : {'$eq':password}},{})
+    .then((user) => {
+        res.status(200).json({data : user});
+    })
+}
+
+..............................................................
+Input :
+
+{
+	"email" : {"$gt": ""},
+	"password" : {"$gt": ""} 
+}
+
+Output : All data will retrive.
+............................................................
+
+
+Solution :
+.............................................................
+..............................................................
+code : 
+
+let login =  (req, res) => {
+    console.log('email =>', req.body.email);
+    console.log('password =>', req.body.password);
+
+    const email = req.body.email;
+    const password = req.body.password;
+    UserModel.getOneUser({'email' : {'$in' : [email]}, 'password' : {'$in' : [password]}},{})
+    .then((user) => {
+        res.status(200).json({data : user});
+    })
+}
+
+Input :
+
+{
+	"email" : {"$gt": ""},
+	"password" : {"$gt": ""} 
+}
+
+Output : No data.
+.........................................................
+.........................................................
